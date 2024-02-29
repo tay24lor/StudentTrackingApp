@@ -2,5 +2,8 @@
     <string name="app_name">Student Progress Application</string>
     <string name="term_list">Term List</string>
     <string name="add_term">Add Term</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <string-array name="termTitles">
+        <item>Spring</item>
+    </string-array>
 </resources>

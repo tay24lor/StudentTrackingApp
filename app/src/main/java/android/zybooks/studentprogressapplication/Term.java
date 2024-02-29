@@ -1,31 +1,36 @@
 package android.zybooks.studentprogressapplication;
 
+import android.content.Context;
+
 import java.time.LocalDate;
+import java.util.List;
 
 public class Term {
-    private LocalDate mStart;
-    private LocalDate mEnd;
+    private String mStart;
+    private String mEnd;
     private String mTitle;
+    private final List<Course> mCourses;
 
-    public Term(LocalDate start, LocalDate end, String title) {
+    public Term(String start, String end, String title, List<Course> courses) {
         mStart = start;
         mEnd = end;
         mTitle = title;
+        mCourses = courses;
     }
 
-    public LocalDate getStart() {
+    public String getStart() {
         return mStart;
     }
 
-    public void setStart(LocalDate start) {
+    public void setStart(String start) {
         this.mStart = start;
     }
 
-    public LocalDate getEnd() {
+    public String getEnd() {
         return mEnd;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(String end) {
         this.mEnd = end;
     }
 
@@ -35,5 +40,12 @@ public class Term {
 
     public void setTitle(String title) {
         this.mTitle = title;
+    }
+
+    public List<Course> getCourses() {
+        return mCourses;
+    }
+    public void setCourse(Course course) {
+        mCourses.add(course);
     }
 }
