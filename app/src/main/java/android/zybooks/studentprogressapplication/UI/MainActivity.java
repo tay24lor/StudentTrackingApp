@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onResume();
 
-        if (terms.size() > 0) {
+        if (!terms.isEmpty()) {
             Toast.makeText(this, terms.get(0).getTitle(), Toast.LENGTH_SHORT).show();
         }
     }
