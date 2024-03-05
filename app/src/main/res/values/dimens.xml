@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="list_text_size">32sp</dimen>
+    <dimen name="list_padding_left">30dp</dimen>
+    <dimen name="list_padding_top">5dp</dimen>
+    <dimen name="list_padding_right">0dp</dimen>
+    <dimen name="list_padding_down">10dp</dimen>
+
+</resources>

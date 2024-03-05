@@ -31,13 +31,11 @@ public class AddTermActivity extends AppCompatActivity {
         EditText termEnd = findViewById(R.id.endDate);
 
         saveTermButton.setOnClickListener(view -> {
-            Term term = new Term(null, null, "", null);
+            Term term = new Term(0, null, null, "", null);
 
             term.setTitle(termTitle.getText().toString());
             term.setStart(termStart.getText().toString());
             term.setEnd(termEnd.getText().toString());
-
-            Toast.makeText(this, term.getTitle() + "\n" + term.getStart() + "\n" + term.getEnd(), Toast.LENGTH_SHORT).show();
 
             MainActivity.terms.add(term);
 

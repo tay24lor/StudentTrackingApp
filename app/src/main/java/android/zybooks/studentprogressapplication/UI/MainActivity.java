@@ -2,20 +2,17 @@ package android.zybooks.studentprogressapplication.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.zybooks.studentprogressapplication.R;
 import android.zybooks.studentprogressapplication.Term;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.ListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +20,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static List<Term> terms = new ArrayList<>();
+
+    public void toast() {
+        Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AddTermActivity.class);
             startActivity(intent);
         });
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.termListLayout);
+
+        if (fragment == null) {
+            fragment = new ListFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.termListLayout, fragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -41,45 +52,18 @@ public class MainActivity extends AppCompatActivity {
 
         super.onResume();
 
-        if (!terms.isEmpty()) {
-            Toast.makeText(this, terms.get(0).getTitle(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void generateTermsList(List<Term> terms) {
+        LinearLayout layout = findViewById(R.id.termListLayout);
+        for (Term term : terms) {
+            TextView textView = new TextView(this);
+            textView.setText(term.getTitle());
+            textView.setTextSize(32);
+            textView.setPadding(30,5,0,10);
+
+            layout.addView(textView);
         }
     }
 
-    private static class TermViewHolder extends RecyclerView.ViewHolder {
-        private final TextView termView;
-
-        private TermViewHolder(View vTermView) {
-            super(vTermView);
-            termView = vTermView.findViewById(R.id.textView);
-        }
-
-        public void bind(String text) {
-            termView.setText(text);
-        }
-
-        static TermViewHolder create(ViewGroup parent) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recyclerview_item, parent, false);
-            return new TermViewHolder(view);
-        }
-    }
-
-    private class TermListAdapter extends ListAdapter<Term, TermViewHolder> {
-        public TermListAdapter(DiffUtil.ItemCallback<Term> diffCallback) {
-            super(diffCallback);
-        }
-
-        @NonNull
-        @Override
-        public TermViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return TermViewHolder.create(parent);
-        }
-
-        @Override
-        public void onBindViewHolder(TermViewHolder holder, int position) {
-            Term current = getItem(position);
-            holder.bind(current.getTitle());
-        }
-    }
 }
