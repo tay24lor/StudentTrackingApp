@@ -3,14 +3,11 @@ package android.zybooks.studentprogressapplication;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
-
 @Entity(tableName = "terms")
 public class Term {
 
     @PrimaryKey(autoGenerate = true)
     private int mId;
-
     private String mStart;
     private String mEnd;
     private String mTitle;

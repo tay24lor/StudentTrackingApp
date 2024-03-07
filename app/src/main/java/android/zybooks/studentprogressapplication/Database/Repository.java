@@ -18,7 +18,7 @@ public class Repository {
 
     public Repository(Application application) {
         TermDatabaseBuilder tDB = TermDatabaseBuilder.getDatabase(application);
-        mTermDAO = tDB.TermDAO();
+        mTermDAO = tDB.termDAO();
     }
 
     public List<Term> getAllTerms() {

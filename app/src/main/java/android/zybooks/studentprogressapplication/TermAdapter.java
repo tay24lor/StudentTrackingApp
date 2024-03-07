@@ -14,26 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder> {
-
-    class TermViewHolder extends RecyclerView.ViewHolder {
-        private final TextView termItemView;
-
-        private TermViewHolder(View itemView) {
-            super(itemView);
-            termItemView = itemView.findViewById(R.id.termTextView);
-            itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                final Term current = mTerms.get(position);
-                Intent intent = new Intent(context, TermDetails.class);
-                intent.putExtra("id", current.getId());
-                intent.putExtra("title", current.getTitle());
-                intent.putExtra("start", current.getStart());
-                intent.putExtra("end", current.getEnd());
-                context.startActivity(intent);
-            });
-        }
-    }
-
     private List<Term> mTerms;
     private final Context context;
     private final LayoutInflater mInflater;
@@ -43,15 +23,38 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         this.context = context;
     }
 
+    public class TermViewHolder extends RecyclerView.ViewHolder {
+        private final TextView termItemView;
+
+        public TermViewHolder(@NonNull View itemView) {
+            super(itemView);
+            termItemView = itemView.findViewById(R.id.termTextView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    final Term current = mTerms.get(position);
+                    Intent intent = new Intent(context, TermDetails.class);
+                    intent.putExtra("id", current.getId());
+                    intent.putExtra("title", current.getTitle());
+                    intent.putExtra("start", current.getStart());
+                    intent.putExtra("end", current.getEnd());
+                    context.startActivity(intent);
+                }
+            });
+        }
+
+    }
+
     @NonNull
     @Override
-    public TermViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TermAdapter.TermViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.term_list_item, parent, false);
         return new TermViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TermViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TermAdapter.TermViewHolder holder, int position) {
         if (mTerms != null) {
             Term current = mTerms.get(position);
             String title = current.getTitle();

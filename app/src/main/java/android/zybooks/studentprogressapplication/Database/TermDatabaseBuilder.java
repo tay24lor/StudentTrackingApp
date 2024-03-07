@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 
 @Database(entities = {Term.class}, version = 1, exportSchema = false)
 public abstract class TermDatabaseBuilder extends RoomDatabase {
-    public abstract TermDAO TermDAO();
+    public abstract TermDAO termDAO();
 
     private static volatile TermDatabaseBuilder INSTANCE;
 
