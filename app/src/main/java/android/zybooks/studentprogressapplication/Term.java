@@ -1,23 +1,25 @@
 package android.zybooks.studentprogressapplication;
 
-import android.content.Context;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-import java.time.LocalDate;
 import java.util.List;
 
+@Entity(tableName = "terms")
 public class Term {
+
+    @PrimaryKey(autoGenerate = true)
     private int mId;
+
     private String mStart;
     private String mEnd;
     private String mTitle;
-    private final List<Course> mCourses;
 
-    public Term(int id, String start, String end, String title, List<Course> courses) {
+    public Term(int id, String start, String end, String title) {
         mId = id;
         mStart = start;
         mEnd = end;
         mTitle = title;
-        mCourses = courses;
     }
 
     public int getId() {
@@ -27,6 +29,7 @@ public class Term {
     public void setId(int id) {
         this.mId = id;
     }
+
     public String getStart() {
         return mStart;
     }
@@ -51,10 +54,4 @@ public class Term {
         this.mTitle = title;
     }
 
-    public List<Course> getCourses() {
-        return mCourses;
-    }
-    public void setCourse(Course course) {
-        mCourses.add(course);
-    }
 }

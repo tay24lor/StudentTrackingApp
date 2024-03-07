@@ -19,8 +19,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static List<Term> terms = new ArrayList<>();
-
     public void toast() {
         Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
     }
@@ -30,40 +28,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = findViewById(R.id.add_term);
+        Button button = findViewById(R.id.enter_button);
         button.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, AddTermActivity.class);
+            Intent intent = new Intent(MainActivity.this, TermListActivity.class);
             startActivity(intent);
         });
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.termListLayout);
-
-        if (fragment == null) {
-            fragment = new ListFragment();
-            fragmentManager.beginTransaction()
-                    .add(R.id.termListLayout, fragment)
-                    .commit();
-        }
     }
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
-
-    }
-
-    private void generateTermsList(List<Term> terms) {
-        LinearLayout layout = findViewById(R.id.termListLayout);
-        for (Term term : terms) {
-            TextView textView = new TextView(this);
-            textView.setText(term.getTitle());
-            textView.setTextSize(32);
-            textView.setPadding(30,5,0,10);
-
-            layout.addView(textView);
-        }
-    }
-
 }
