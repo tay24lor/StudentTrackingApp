@@ -37,12 +37,12 @@ public class TermListActivity extends AppCompatActivity {
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         termAdapter.setTerms(allTerms);
-        StringBuilder names = new StringBuilder();
+        //StringBuilder names = new StringBuilder();
 
-        for (int i = 0; i < allTerms.size(); i++) {
+        /*for (int i = 0; i < allTerms.size(); i++) {
             names.append(allTerms.get(i).getTitle());
-        }
-        Toast.makeText(TermListActivity.this, names.toString(), Toast.LENGTH_SHORT).show();
+        }*/
+        //Toast.makeText(TermListActivity.this, names.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

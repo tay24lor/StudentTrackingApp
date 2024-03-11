@@ -41,9 +41,8 @@ public class TermDetails extends AppCompatActivity {
                                 editEndDate.getText().toString(),
                                 editTitle.getText().toString());
             repository.insert(term);
-
-            term = new Term(2, editStartDate.getText().toString(), editEndDate.getText().toString(), editTitle.getText().toString());
-            repository.insert(term);
+            Intent intent = new Intent(this, TermListActivity.class);
+            startActivity(intent);
 
         });
     }

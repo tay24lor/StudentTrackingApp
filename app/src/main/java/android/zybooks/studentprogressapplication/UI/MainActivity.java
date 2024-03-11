@@ -3,25 +3,14 @@ package android.zybooks.studentprogressapplication.UI;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.zybooks.studentprogressapplication.R;
-import android.zybooks.studentprogressapplication.Term;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.ListFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/*TODO
+*  Work on datestamps
+*  Work on sending selected term info to term details*/
 public class MainActivity extends AppCompatActivity {
-
-    public void toast() {
-        Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
