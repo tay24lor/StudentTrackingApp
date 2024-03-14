@@ -10,6 +10,7 @@ import android.zybooks.studentprogressapplication.Term;
 import android.zybooks.studentprogressapplication.TermAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,19 +31,16 @@ public class TermListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        RecyclerView recyclerView = findViewById(R.id.term_recycler);
         repository = new Repository(getApplication());
         List<Term> allTerms = repository.getAllTerms();
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        RecyclerView recyclerView = findViewById(R.id.term_recycler);
         final TermAdapter termAdapter = new TermAdapter(this);
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(itemDecoration);
         termAdapter.setTerms(allTerms);
-        //StringBuilder names = new StringBuilder();
-
-        /*for (int i = 0; i < allTerms.size(); i++) {
-            names.append(allTerms.get(i).getTitle());
-        }*/
-        //Toast.makeText(TermListActivity.this, names.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -55,5 +53,4 @@ public class TermListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         termAdapter.setTerms(allTerms);
     }
-
 }

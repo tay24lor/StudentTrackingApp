@@ -7,24 +7,32 @@ import androidx.room.PrimaryKey;
 public class Term {
 
     @PrimaryKey(autoGenerate = true)
-    private int mId;
+    private int termId;
     private String mStart;
     private String mEnd;
     private String mTitle;
 
-    public Term(int id, String start, String end, String title) {
-        mId = id;
+    public Term(int id, String title, String start, String end) {
+        termId = id;
+        mTitle = title;
         mStart = start;
         mEnd = end;
-        mTitle = title;
     }
 
     public int getId() {
-        return mId;
+        return termId;
     }
 
     public void setId(int id) {
-        this.mId = id;
+        this.termId = id;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String title) {
+        this.mTitle = title;
     }
 
     public String getStart() {
@@ -41,14 +49,6 @@ public class Term {
 
     public void setEnd(String end) {
         this.mEnd = end;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String title) {
-        this.mTitle = title;
     }
 
 }

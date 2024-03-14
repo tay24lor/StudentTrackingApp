@@ -1,13 +1,21 @@
 package android.zybooks.studentprogressapplication;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.time.LocalDate;
 
+@Entity(tableName = "courses")
 public class Course {
+
+    @PrimaryKey(autoGenerate = true)
+    private int courseID;
     private LocalDate mStart;
     private LocalDate mEnd;
     private String mTitle;
     private String mStatus;
     private Instructor mInstructor;
+    private int termID;
 
     public Course(LocalDate start, LocalDate end, String title, String status, Instructor instructor) {
         mStart = start;
@@ -17,6 +25,12 @@ public class Course {
         mInstructor = instructor;
     }
 
+    public int getID() {
+        return courseID;
+    }
+    public void setID(int id) {
+        courseID = id;
+    }
     public LocalDate getStart() {
         return mStart;
     }
@@ -29,7 +43,7 @@ public class Course {
         return mEnd;
     }
 
-    public void setmEnd(LocalDate end) {
+    public void setEnd(LocalDate end) {
         this.mEnd = end;
     }
 

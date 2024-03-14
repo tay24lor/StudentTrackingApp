@@ -29,21 +29,17 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         public TermViewHolder(@NonNull View itemView) {
             super(itemView);
             termItemView = itemView.findViewById(R.id.termTextView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    final Term current = mTerms.get(position);
-                    Intent intent = new Intent(context, TermDetails.class);
-                    intent.putExtra("id", current.getId());
-                    intent.putExtra("title", current.getTitle());
-                    intent.putExtra("start", current.getStart());
-                    intent.putExtra("end", current.getEnd());
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                Term current = mTerms.get(position);
+                Intent intent = new Intent(context, TermDetails.class);
+                intent.putExtra("id", current.getId());
+                intent.putExtra("title", current.getTitle());
+                intent.putExtra("start", current.getStart());
+                intent.putExtra("end", current.getEnd());
+                context.startActivity(intent);
             });
         }
-
     }
 
     @NonNull
@@ -52,16 +48,16 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         View itemView = mInflater.inflate(R.layout.term_list_item, parent, false);
         return new TermViewHolder(itemView);
     }
-
+    
     @Override
     public void onBindViewHolder(@NonNull TermAdapter.TermViewHolder holder, int position) {
         if (mTerms != null) {
             Term current = mTerms.get(position);
             String title = current.getTitle();
-            holder.termItemView.setText(title);
+            holder.termItemView.setText(String.format("%d. %s\n%s - %s", current.getId(), title, current.getStart(), current.getEnd()));
         }
         else {
-            holder.termItemView.setText("No terms.");
+            holder.termItemView.setText("No Terms.");
         }
     }
 
