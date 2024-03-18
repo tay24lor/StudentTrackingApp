@@ -35,7 +35,6 @@ public class TermListActivity extends AppCompatActivity {
 
         addTermButton.setOnClickListener(v -> {
             Intent intent = new Intent(TermListActivity.this, TermDetails.class);
-            intent.putExtra("termID", -1);
             startActivity(intent);
         });
 
@@ -61,4 +60,5 @@ public class TermListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         termAdapter.setTerms(allTerms);
     }
+
 }

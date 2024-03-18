@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C19F8C"
     tools:context=".UI.TermDetails">
 
     <LinearLayout
@@ -16,8 +17,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="85dp"
+            android:background="#F3EAEA"
             android:orientation="horizontal">
 
             <TextView
@@ -37,8 +39,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="85dp"
+            android:background="#DDD5D5"
             android:orientation="horizontal">
 
             <TextView
@@ -69,8 +72,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="85dp"
+            android:background="#F3EAEA"
             android:orientation="horizontal">
 
             <TextView

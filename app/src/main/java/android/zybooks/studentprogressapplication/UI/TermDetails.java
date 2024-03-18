@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -86,7 +87,7 @@ public class TermDetails extends AppCompatActivity {
         ImageButton startDateButton = findViewById(R.id.startDatePicker);
         startDateButton.setOnClickListener(view -> {
             String date = editStartDate.getText().toString();
-            if (date.isEmpty()) date = "03/12/2024";
+            if (date.isEmpty()) date = LocalDate.now().toString();
             try {
                 myCalendarStart.setTime(Objects.requireNonNull(sdf.parse(date)));
 
@@ -120,9 +121,9 @@ public class TermDetails extends AppCompatActivity {
             if (termID == -1) {
                 if (repository.getAllTerms().isEmpty())
                     termID = 1;
-                else {
+                else
                     termID = getLatestID();
-                }
+
 
                 term = new Term(termID, editTitle.getText().toString(), editStartDate.getText().toString(),
                                 editEndDate.getText().toString());
@@ -130,9 +131,16 @@ public class TermDetails extends AppCompatActivity {
             }
             else {
                 term = new Term(termID, editTitle.getText().toString(), editStartDate.getText().toString(),
-                        editEndDate.getText().toString());
+                                editEndDate.getText().toString());
                 repository.update(term);
             }
+
+            for (Course course : repository.getAllCourses()) {
+                if (course.getTermID() == -1) {
+                    course.setTermID(termID);
+                }
+            }
+
             Intent intent = new Intent(this, TermListActivity.class);
             startActivity(intent);
 
@@ -157,15 +165,18 @@ public class TermDetails extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-        termID = getIntent().getIntExtra("termID", -1);
-        title = getIntent().getStringExtra("title");
-        editTitle.setText(title);
 
-        start = getIntent().getStringExtra("start");
-        editStartDate.setText(start);
+        Term term = null;
+        for (Term termInList : repository.getAllTerms()) {
+            if (termInList.getPrimary_id() == termID) {
+                term = termInList;
+            }
+        }
 
-        end = getIntent().getStringExtra("end");
-        editEndDate.setText(end);
+        assert term != null;
+        editTitle.setText(term.getTitle());
+        editStartDate.setText(term.getStart());
+        editEndDate.setText(term.getEnd());
 
         List<Course> associatedCourses = new ArrayList<>();
         for (Course course : repository.getAllCourses()) {
@@ -216,6 +227,7 @@ public class TermDetails extends AppCompatActivity {
 
     public void addCourse(View view) {
         Intent intent = new Intent(this, CourseDetails.class);
+        intent.putExtra("courseID", -1);
         intent.putExtra("termID", termID);
         startActivity(intent);
     }

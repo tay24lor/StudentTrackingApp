@@ -14,13 +14,14 @@ public class Course {
     private String instructorName;
     private int termID;
 
-    public Course(int id, String title, String start, String end, String status, String instructorName) {
+    public Course(int id, String title, String start, String end, String status, String instructorName, int termId) {
         primary_id = id;
         mStart = start;
         mEnd = end;
         mTitle = title;
         mStatus = status;
         this.instructorName = instructorName;
+        this.termID = termId;
     }
 
     public Course(){}
