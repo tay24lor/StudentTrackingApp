@@ -3,48 +3,34 @@ package android.zybooks.studentprogressapplication;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.time.LocalDate;
-
 @Entity(tableName = "courses")
 public class Course {
-
     @PrimaryKey(autoGenerate = true)
-    private int courseID;
-    private LocalDate mStart;
-    private LocalDate mEnd;
+    private int primary_id;
+    private String mStart;
+    private String mEnd;
     private String mTitle;
     private String mStatus;
-    private Instructor mInstructor;
+    private String instructorName;
     private int termID;
 
-    public Course(LocalDate start, LocalDate end, String title, String status, Instructor instructor) {
+    public Course(int id, String title, String start, String end, String status, String instructorName) {
+        primary_id = id;
         mStart = start;
         mEnd = end;
         mTitle = title;
         mStatus = status;
-        mInstructor = instructor;
+        this.instructorName = instructorName;
     }
 
-    public int getID() {
-        return courseID;
-    }
-    public void setID(int id) {
-        courseID = id;
-    }
-    public LocalDate getStart() {
-        return mStart;
+    public Course(){}
+
+    public int getPrimary_id() {
+        return primary_id;
     }
 
-    public void setStart(LocalDate start) {
-        this.mStart = start;
-    }
-
-    public LocalDate getEnd() {
-        return mEnd;
-    }
-
-    public void setEnd(LocalDate end) {
-        this.mEnd = end;
+    public void setPrimary_id(int primary_id) {
+        this.primary_id = primary_id;
     }
 
     public String getTitle() {
@@ -55,6 +41,22 @@ public class Course {
         this.mTitle = title;
     }
 
+    public String getStart() {
+        return mStart;
+    }
+
+    public void setStart(String start) {
+        this.mStart = start;
+    }
+
+    public String getEnd() {
+        return mEnd;
+    }
+
+    public void setEnd(String end) {
+        this.mEnd = end;
+    }
+
     public String getStatus() {
         return mStatus;
     }
@@ -63,11 +65,15 @@ public class Course {
         mStatus = status;
     }
 
-    public Instructor getInstructor() {
-        return mInstructor;
+    public int getTermID() { return termID; }
+
+    public void setTermID(int id) { termID = id; }
+
+    public String getInstructorName() {
+        return instructorName;
     }
 
-    public void setInstructor(Instructor instructor) {
-        mInstructor = instructor;
+    public void setInstructorName(String instructorName) {
+        this.instructorName = instructorName;
     }
 }

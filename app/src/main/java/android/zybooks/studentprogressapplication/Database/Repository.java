@@ -70,15 +70,6 @@ public class Repository {
         }
         return mAllCourses;
     }
-    public List<Course> getAssociatedCourses(int termID) {
-        databaseExecutor.execute(()-> mAllCourses = mCourseDAO.getAssociatedCourses(termID));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return mAllCourses;
-    }
     public void insert(Course course) {
         databaseExecutor.execute(()-> mCourseDAO.insert(course));
         try {

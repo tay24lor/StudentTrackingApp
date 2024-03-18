@@ -10,6 +10,7 @@ import android.zybooks.studentprogressapplication.Term;
 import android.zybooks.studentprogressapplication.TermAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,21 +26,28 @@ public class TermListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_list);
 
+        repository = new Repository(getApplication());
+        List<Term> allTerms = repository.getAllTerms();
+
         Button addTermButton = findViewById(R.id.add_term_button);
+
+
+
         addTermButton.setOnClickListener(v -> {
             Intent intent = new Intent(TermListActivity.this, TermDetails.class);
+            intent.putExtra("termID", -1);
             startActivity(intent);
         });
 
-        repository = new Repository(getApplication());
-        List<Term> allTerms = repository.getAllTerms();
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         RecyclerView recyclerView = findViewById(R.id.term_recycler);
         final TermAdapter termAdapter = new TermAdapter(this);
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         termAdapter.setTerms(allTerms);
     }
 

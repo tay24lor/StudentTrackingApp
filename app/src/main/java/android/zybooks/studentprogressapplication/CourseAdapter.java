@@ -1,4 +1,4 @@
-/*
+
 package android.zybooks.studentprogressapplication;
 
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.zybooks.studentprogressapplication.UI.CourseDetails;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +17,7 @@ import java.util.List;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private List<Course> mCourses;
     private final Context context;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public CourseAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -24,23 +25,23 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     }
 
     public class CourseViewHolder extends RecyclerView.ViewHolder {
-        //private final TextView courseItemView;
+        private final TextView courseItemView;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
-            //courseItemView = itemView.findViewById(R.id.courseTextView);
+            courseItemView = itemView.findViewById(R.id.courseTextView);
             itemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 Course current = mCourses.get(position);
-                */
-/*Intent intent = new Intent(context, CourseDetails.class);
-                intent.putExtra("id", current.getID());
+
+                Intent intent = new Intent(context, CourseDetails.class);
+                intent.putExtra("id", current.getPrimary_id());
                 intent.putExtra("title", current.getTitle());
                 intent.putExtra("start", current.getStart());
                 intent.putExtra("end", current.getEnd());
                 intent.putExtra("status", current.getStatus());
-                intent.putExtra("instructorName", current.getInstructor().getName());
-                context.startActivity(intent);*//*
+                intent.putExtra("instructorName", current.getInstructorName());
+                context.startActivity(intent);
 
             });
         }
@@ -58,7 +59,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         if (mCourses != null) {
             Course current = mCourses.get(position);
             String title = current.getTitle();
-            holder.courseItemView.setText(title);
+            holder.courseItemView.setText(current.getPrimary_id() + ". " + title + " | "
+                                            + current.getTermID());
         }
         else {
             holder.courseItemView.setText("No Courses");
@@ -73,4 +75,3 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @Override
     public int getItemCount() { return mCourses.size(); }
 }
-*/

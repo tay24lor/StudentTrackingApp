@@ -7,25 +7,30 @@ import androidx.room.PrimaryKey;
 public class Term {
 
     @PrimaryKey(autoGenerate = true)
-    private int termId;
+    private int primary_id;
     private String mStart;
     private String mEnd;
     private String mTitle;
-
     public Term(int id, String title, String start, String end) {
-        termId = id;
+        primary_id = id;
         mTitle = title;
         mStart = start;
         mEnd = end;
     }
 
-    public int getId() {
-        return termId;
+    public Term() {
+
     }
 
-    public void setId(int id) {
-        this.termId = id;
+    public int getPrimary_id() {
+        return primary_id;
     }
+
+    public void setPrimary_id(int id) {
+        primary_id = id;
+    }
+
+
 
     public String getTitle() {
         return mTitle;

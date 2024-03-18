@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 import android.zybooks.studentprogressapplication.UI.TermDetails;
 
@@ -26,14 +29,18 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     public class TermViewHolder extends RecyclerView.ViewHolder {
         private final TextView termItemView;
 
+
+
+
         public TermViewHolder(@NonNull View itemView) {
             super(itemView);
+
             termItemView = itemView.findViewById(R.id.termTextView);
             itemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 Term current = mTerms.get(position);
                 Intent intent = new Intent(context, TermDetails.class);
-                intent.putExtra("id", current.getId());
+                intent.putExtra("termID", current.getPrimary_id());
                 intent.putExtra("title", current.getTitle());
                 intent.putExtra("start", current.getStart());
                 intent.putExtra("end", current.getEnd());
@@ -41,6 +48,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
             });
         }
     }
+
 
     @NonNull
     @Override
@@ -54,7 +62,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
         if (mTerms != null) {
             Term current = mTerms.get(position);
             String title = current.getTitle();
-            holder.termItemView.setText(String.format("%d. %s\n%s - %s", current.getId(), title, current.getStart(), current.getEnd()));
+            holder.termItemView.setText(String.format("%d. %s\n%s - %s", current.getPrimary_id(), title, current.getStart(), current.getEnd()));
         }
         else {
             holder.termItemView.setText("No Terms.");
