@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -88,12 +89,8 @@ public class TermDetails extends AppCompatActivity {
         startDateButton.setOnClickListener(view -> {
             String date = editStartDate.getText().toString();
             if (date.isEmpty()) date = LocalDate.now().toString();
-            try {
-                myCalendarStart.setTime(Objects.requireNonNull(sdf.parse(date)));
+            myCalendarStart.setTime(Date.valueOf(date));
 
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
             new DatePickerDialog(TermDetails.this, startDate, myCalendarStart.get(Calendar.YEAR),
                                  myCalendarStart.get(Calendar.MONTH), myCalendarStart.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -102,13 +99,9 @@ public class TermDetails extends AppCompatActivity {
         ImageButton endDateButton = findViewById(R.id.endDatePicker);
         endDateButton.setOnClickListener(view -> {
             String date = editEndDate.getText().toString();
-            if (date.isEmpty()) date = "03/12/2024";
-            try {
-                myCalendarEnd.setTime(Objects.requireNonNull(sdf.parse(date)));
+            if (date.isEmpty()) date = LocalDate.now().toString();
+            myCalendarEnd.setTime(Date.valueOf(date));
 
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
             new DatePickerDialog(TermDetails.this, endDate, myCalendarEnd.get(Calendar.YEAR),
                     myCalendarEnd.get(Calendar.MONTH), myCalendarEnd.get(Calendar.DAY_OF_MONTH)).show();
 

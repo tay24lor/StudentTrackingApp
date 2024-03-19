@@ -28,6 +28,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
 
     public class TermViewHolder extends RecyclerView.ViewHolder {
         private final TextView termItemView;
+        private final TextView termTitleView;
 
 
 
@@ -36,6 +37,7 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
             super(itemView);
 
             termItemView = itemView.findViewById(R.id.termTextView);
+            termTitleView = itemView.findViewById(R.id.termTitleTextView);
             itemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 Term current = mTerms.get(position);
@@ -61,8 +63,8 @@ public class TermAdapter extends RecyclerView.Adapter<TermAdapter.TermViewHolder
     public void onBindViewHolder(@NonNull TermAdapter.TermViewHolder holder, int position) {
         if (mTerms != null) {
             Term current = mTerms.get(position);
-            String title = current.getTitle();
-            holder.termItemView.setText(String.format("%d. %s\n%s - %s", current.getPrimary_id(), title, current.getStart(), current.getEnd()));
+            holder.termTitleView.setText(current.getTitle());
+            holder.termItemView.setText(current.getStart() + " - " + current.getEnd());
         }
         else {
             holder.termItemView.setText("No Terms.");

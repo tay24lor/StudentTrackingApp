@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C19F8C"
+    android:background="#D4D7E3"
     tools:context=".UI.TermDetails">
 
     <LinearLayout
         android:layout_width="395dp"
         android:layout_height="555dp"
+        android:background="#CDCDCD"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,7 +20,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="85dp"
-            android:background="#F3EAEA"
             android:orientation="horizontal">
 
             <TextView
@@ -41,7 +41,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="85dp"
-            android:background="#DDD5D5"
             android:orientation="horizontal">
 
             <TextView
@@ -74,7 +73,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="85dp"
-            android:background="#F3EAEA"
             android:orientation="horizontal">
 
             <TextView
@@ -117,7 +115,7 @@
             android:id="@+id/courseRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="216dp"
-            android:background="#9DCDE3" />
+            android:background="#4FF4ED7E" />
 
     </LinearLayout>
 

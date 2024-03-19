@@ -26,10 +26,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     public class CourseViewHolder extends RecyclerView.ViewHolder {
         private final TextView courseItemView;
+        private final TextView courseTitleView;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
             courseItemView = itemView.findViewById(R.id.courseTextView);
+            courseTitleView = itemView.findViewById(R.id.courseTitleTextView);
             itemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 Course current = mCourses.get(position);
@@ -41,6 +43,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 intent.putExtra("end", current.getEnd());
                 intent.putExtra("status", current.getStatus());
                 intent.putExtra("instructorName", current.getInstructorName());
+                intent.putExtra("termID", current.getTermID());
                 context.startActivity(intent);
 
             });
@@ -59,8 +62,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         if (mCourses != null) {
             Course current = mCourses.get(position);
             String title = current.getTitle();
-            holder.courseItemView.setText(current.getPrimary_id() + ". " + title + " | "
-                                            + current.getTermID());
+            holder.courseTitleView.setText(title + "(" + current.getStatus() + ")");
+            holder.courseItemView.setText(current.getStart() + " - " + current.getEnd() + "\n" +
+                                          "Instructor: " + current.getInstructorName());
         }
         else {
             holder.courseItemView.setText("No Courses");
