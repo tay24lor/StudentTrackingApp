@@ -20,14 +20,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class TermDetails extends AppCompatActivity {
 
@@ -68,8 +66,6 @@ public class TermDetails extends AppCompatActivity {
 
         end = getIntent().getStringExtra("end");
         editEndDate.setText(end);
-
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 
         startDate = (datePicker, year, monthOfYear, dayOfMonth) -> {
             myCalendarStart.set(Calendar.YEAR, year);
@@ -159,17 +155,20 @@ public class TermDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Term term = null;
-        for (Term termInList : repository.getAllTerms()) {
-            if (termInList.getPrimary_id() == termID) {
-                term = termInList;
+        if (!repository.getAllTerms().isEmpty()) {
+            Term term = null;
+            for (Term termInList : repository.getAllTerms()) {
+                if (termInList.getPrimary_id() == termID) {
+                    term = termInList;
+                }
             }
-        }
 
-        assert term != null;
-        editTitle.setText(term.getTitle());
-        editStartDate.setText(term.getStart());
-        editEndDate.setText(term.getEnd());
+
+            assert term != null;
+            editTitle.setText(term.getTitle());
+            editStartDate.setText(term.getStart());
+            editEndDate.setText(term.getEnd());
+        }
 
         List<Course> associatedCourses = new ArrayList<>();
         for (Course course : repository.getAllCourses()) {

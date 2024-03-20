@@ -2,7 +2,6 @@ package android.zybooks.studentprogressapplication.UI;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,30 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.zybooks.studentprogressapplication.Course;
 import android.zybooks.studentprogressapplication.Database.Repository;
 import android.zybooks.studentprogressapplication.R;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.sql.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
 
 public class CourseDetails extends AppCompatActivity {
 
     int courseID;
-    String title;
     String start;
     String end;
     String instructorN;
@@ -133,6 +123,7 @@ public class CourseDetails extends AppCompatActivity {
         button.setOnClickListener(view -> {
             Course course;
             statusString = status.getSelectedItem().toString();
+            instructorN = instructorName.getText().toString();
 
             if (courseID == -1) {
                 if (repository.getAllCourses().isEmpty())
