@@ -159,6 +159,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#B39E9E"
+        android:elevation="8dp"
         android:text="Add Assessment +"
         android:textSize="22sp"
         android:textStyle="bold" />

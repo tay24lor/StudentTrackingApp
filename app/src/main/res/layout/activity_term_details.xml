@@ -5,21 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#D4D7E3"
+    android:outlineProvider="paddedBounds"
     tools:context=".UI.TermDetails">
 
     <LinearLayout
-        android:layout_width="395dp"
-        android:layout_height="555dp"
+        android:id="@+id/linearLayout2"
+        android:layout_width="394dp"
+        android:layout_height="484dp"
         android:background="#CDCDCD"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.28">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="78dp"
+            android:elevation="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -27,6 +31,7 @@
                 android:layout_width="87dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+                android:layout_marginEnd="50dp"
                 android:gravity="center|start"
                 android:text="Term Name"
                 android:textSize="14sp"
@@ -34,13 +39,16 @@
 
             <EditText
                 android:id="@+id/term_name_field"
-                android:layout_width="284dp"
-                android:layout_height="75dp" />
+                android:layout_width="225dp"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:textAlignment="gravity" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="78dp"
+            android:elevation="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -58,22 +66,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="3dp"
                 app:srcCompat="@drawable/baseline_edit_calendar_24" />
 
             <EditText
                 android:id="@+id/editTextStartDateSelected"
-                android:layout_width="236dp"
+                android:layout_width="225dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom"
+                android:editable="false"
                 android:ems="10"
-                android:inputType="date" />
+                android:inputType="date"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
-            android:orientation="horizontal">
+            android:layout_height="78dp"
+            android:elevation="5dp"
+            android:orientation="horizontal"
+            android:outlineProvider="none">
 
             <TextView
                 android:id="@+id/textView9"
@@ -90,15 +103,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="3dp"
                 app:srcCompat="@drawable/baseline_edit_calendar_24" />
 
             <EditText
                 android:id="@+id/editTextEndDateSelected"
-                android:layout_width="236dp"
+                android:layout_width="225dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="bottom"
+                android:editable="false"
                 android:ems="10"
-                android:inputType="date" />
+                android:inputType="date"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
@@ -115,7 +131,11 @@
             android:id="@+id/courseRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="216dp"
-            android:background="#4FF4ED7E" />
+            android:layout_marginTop="2dp"
+            android:background="#4FF4ED7E"
+            android:elevation="12dp"
+            android:outlineProvider="none"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 
@@ -123,21 +143,28 @@
         android:id="@+id/button_save_term"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="28dp"
         android:layout_marginBottom="16dp"
+        android:outlineProvider="none"
         android:text="Save Term"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/imageButton2"
-        android:layout_width="54dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="50dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
         android:background="#0000"
         android:onClick="deleteTerm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_delete_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,9 @@
 package android.zybooks.studentprogressapplication.Database;
 
 import android.app.Application;
+import android.zybooks.studentprogressapplication.Assessment;
 import android.zybooks.studentprogressapplication.Course;
+import android.zybooks.studentprogressapplication.DAO.AssessmentDAO;
 import android.zybooks.studentprogressapplication.DAO.CourseDAO;
 import android.zybooks.studentprogressapplication.DAO.TermDAO;
 import android.zybooks.studentprogressapplication.Term;
@@ -13,8 +15,10 @@ import java.util.concurrent.Executors;
 public class Repository {
     private final TermDAO mTermDAO;
     private final CourseDAO mCourseDAO;
+    private final AssessmentDAO mAssessmentDAO;
     private List<Term> mAllTerms;
     private List<Course> mAllCourses;
+    private List<Assessment> mAllAssessments;
 
 
 
@@ -26,6 +30,7 @@ public class Repository {
         TermDatabaseBuilder tDB = TermDatabaseBuilder.getDatabase(application);
         mTermDAO = tDB.termDAO();
         mCourseDAO = tDB.courseDAO();
+        mAssessmentDAO = tDB.assessmentDAO();
     }
 
     public List<Term> getAllTerms() {
@@ -88,6 +93,39 @@ public class Repository {
     }
     public void delete(Course course) {
         databaseExecutor.execute(()-> mCourseDAO.delete(course));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public List<Assessment> getAllAssessments() {
+        databaseExecutor.execute(() -> mAllAssessments = mAssessmentDAO.getAllAssessments());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return mAllAssessments;
+    }
+    public void insert(Assessment assessment){
+        databaseExecutor.execute(()-> mAssessmentDAO.insert(assessment));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void update(Assessment assessment){
+        databaseExecutor.execute(()-> mAssessmentDAO.update(assessment));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void delete(Assessment assessment){
+        databaseExecutor.execute(()-> mAssessmentDAO.delete(assessment));
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
