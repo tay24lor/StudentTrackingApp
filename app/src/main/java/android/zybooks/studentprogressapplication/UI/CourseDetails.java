@@ -10,16 +10,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.zybooks.studentprogressapplication.Assessment;
+import android.zybooks.studentprogressapplication.AssessmentAdapter;
 import android.zybooks.studentprogressapplication.Course;
+import android.zybooks.studentprogressapplication.CourseAdapter;
 import android.zybooks.studentprogressapplication.Database.Repository;
 import android.zybooks.studentprogressapplication.R;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class CourseDetails extends AppCompatActivity {
@@ -29,6 +37,7 @@ public class CourseDetails extends AppCompatActivity {
     String end;
     String instructorN;
     String statusString;
+    int termID;
 
     DatePickerDialog.OnDateSetListener startDate;
     DatePickerDialog.OnDateSetListener endDate;
@@ -41,8 +50,8 @@ public class CourseDetails extends AppCompatActivity {
     EditText courseStart;
     EditText courseEnd;
     EditText instructorName;
-    int termID;
     Repository repository;
+    int tempTermID;
 
 
     @Override
@@ -146,6 +155,22 @@ public class CourseDetails extends AppCompatActivity {
             intent.putExtra("termID", course.getTermID());
             startActivity(intent);
         });
+
+        List<Assessment> associatedAssessments = new ArrayList<>();
+        for (Assessment assessment : repository.getAllAssessments()) {
+            if (assessment.getCourseID() == courseID) {
+                associatedAssessments.add(assessment);
+            }
+        }
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+
+        RecyclerView assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
+        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+        assessmentRecyclerView.setAdapter(assessmentAdapter);
+        assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        assessmentRecyclerView.addItemDecoration(itemDecoration);
+        assessmentAdapter.setAssessments(associatedAssessments);
     }
     public int getLatestID() {
         return repository.getAllCourses().get(repository.getAllCourses().size()

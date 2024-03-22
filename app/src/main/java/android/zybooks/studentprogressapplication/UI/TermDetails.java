@@ -155,7 +155,8 @@ public class TermDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (!repository.getAllTerms().isEmpty()) {
+
+        if (!repository.getAllTerms().isEmpty() && termID != -1) {
             Term term = null;
             for (Term termInList : repository.getAllTerms()) {
                 if (termInList.getPrimary_id() == termID) {
@@ -220,7 +221,10 @@ public class TermDetails extends AppCompatActivity {
     public void addCourse(View view) {
         Intent intent = new Intent(this, CourseDetails.class);
         intent.putExtra("courseID", -1);
-        intent.putExtra("termID", termID);
+        if (termID == -1)
+            intent.putExtra("termID", getLatestID());
+        else
+            intent.putExtra("termID", termID);
         startActivity(intent);
     }
 }
