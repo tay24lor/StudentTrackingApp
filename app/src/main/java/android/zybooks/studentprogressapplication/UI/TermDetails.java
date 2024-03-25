@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +33,6 @@ import java.util.Objects;
 public class TermDetails extends AppCompatActivity {
 
     int termID;
-    int tempTermID;
     String title;
     String start;
     String end;
@@ -124,7 +122,6 @@ public class TermDetails extends AppCompatActivity {
                 else
                     termID = getLatestID();
 
-
                 term = new Term(termID, editTitle.getText().toString(), editStartDate.getText().toString(),
                                 editEndDate.getText().toString());
                 repository.insert(term);
@@ -143,7 +140,6 @@ public class TermDetails extends AppCompatActivity {
 
             Intent intent = new Intent(this, TermListActivity.class);
             startActivity(intent);
-
         });
 
         List<Course> associatedCourses = new ArrayList<>();
@@ -168,22 +164,16 @@ public class TermDetails extends AppCompatActivity {
         courseAdapter.setCourses(associatedCourses);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.course_details_menu, menu);
-        return true;
-    }
-
-
     protected void onResume() {
         super.onResume();
-        Term term;
+        /*Term term;
+        termID = getIntent().getIntExtra("termID", -1);
         if (!repository.getAllTerms().isEmpty()) {
             term = repository.getAllTerms().get(termID - 1);
             editTitle.setText(term.getTitle());
             editStartDate.setText(term.getStart());
             editEndDate.setText(term.getEnd());
-        }
+        }*/
         /*if (!repository.getAllTerms().isEmpty()) {
             Term term = null;
             for (Term termInList : repository.getAllTerms()) {

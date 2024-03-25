@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.zybooks.studentprogressapplication.Assessment;
+import android.zybooks.studentprogressapplication.AssessmentAdapter;
 import android.zybooks.studentprogressapplication.Course;
 import android.zybooks.studentprogressapplication.CreateNoteActivity;
 import android.zybooks.studentprogressapplication.Database.Repository;
@@ -18,12 +20,18 @@ import android.zybooks.studentprogressapplication.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CourseDetails extends AppCompatActivity {
 
@@ -61,11 +69,18 @@ public class CourseDetails extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         repository = new Repository(getApplication());
 
-        for (Course current : repository.getAllCourses()) { course = current; }
-
         courseID = getIntent().getIntExtra("id", -1);
+
+        for (Course current : repository.getAllCourses()) {
+            if (current.getPrimary_id() == courseID)
+                course = current;
+        }
+
         start = getIntent().getStringExtra("courseStart");
         end = getIntent().getStringExtra("courseEnd");
         instructorN = getIntent().getStringExtra("instructorName");
@@ -78,7 +93,6 @@ public class CourseDetails extends AppCompatActivity {
 
         courseTitle = findViewById(R.id.course_name_field);
         courseTitle.setText(getIntent().getStringExtra(("title")));
-
         courseStart = findViewById(R.id.editTextStartDateSelected);
         courseStart.setText(start);
 
@@ -150,15 +164,13 @@ public class CourseDetails extends AppCompatActivity {
                     courseID = getLatestID();
 
                 course = new Course(courseID, courseTitle.getText().toString(),
-                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID);
-                course.setNotes(note);
+                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID, note);
                 repository.insert(course);
             }
 
             else {
                 course = new Course(courseID, courseTitle.getText().toString(),
-                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID);
-                course.setNotes(note);
+                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID, note);
                 repository.update(course);
             }
 
@@ -169,6 +181,27 @@ public class CourseDetails extends AppCompatActivity {
             intent.putExtra("end", termEnd);
             startActivity(intent);
         });
+
+        List<Assessment> associatedAssessments = new ArrayList<>();
+        for (Assessment assessment : repository.getAllAssessments()) {
+            if (assessment.getCourseID() == -1) {
+                assessment.setCourseID(courseID);
+                associatedAssessments.add(assessment);
+                repository.update(assessment);
+            }
+            else if (assessment.getCourseID() == courseID) {
+                associatedAssessments.add(assessment);
+            }
+        }
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+
+        RecyclerView assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
+        final AssessmentAdapter assessmentAdapter = new AssessmentAdapter(this);
+        assessmentRecyclerView.setAdapter(assessmentAdapter);
+        assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        assessmentRecyclerView.addItemDecoration(itemDecoration);
+        assessmentAdapter.setAssessments(associatedAssessments);
     }
     public int getLatestID() {
         return repository.getAllCourses().get(repository.getAllCourses().size()
@@ -192,32 +225,42 @@ public class CourseDetails extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (!repository.getAllCourses().isEmpty()) {
-            if (course.getNotes().isEmpty()) {
-                menu.findItem(R.id.add_notes_action).setTitle("Add Note");
-            } else {
-                menu.findItem(R.id.add_notes_action).setTitle("View Notes");
+            if (course != null) {
+                if (course.getNotes().isEmpty()) {
+                    menu.findItem(R.id.add_notes_action).setTitle("Add Note");
+                } else {
+                    menu.findItem(R.id.add_notes_action).setTitle("View Notes");
+                }
             }
         }
+        else if (courseID == -1)
+            menu.findItem(R.id.add_notes_action).setTitle("Add Note");
         return true;
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.course_details_menu, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-
             super.onBackPressed();
             return true;
-
         }
         else if (item.getItemId() == R.id.add_notes_action) {
+            String notes;
+            if (course != null) {
+                if (!course.getNotes().isEmpty())
+                    notes = course.getNotes();
+                else
+                    notes = "";
+            }
+            else
+                notes = "";
             Intent intent = new Intent(this, CreateNoteActivity.class);
             intent.putExtra("courseID", courseID);
+            intent.putExtra("notes", notes);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -229,5 +272,10 @@ public class CourseDetails extends AppCompatActivity {
     private void updateEnd() {
         courseEnd.setText(sdf.format(myCalendarEnd.getTime()));
         end = courseEnd.getText().toString();
+    }
+    public void addAssessment(View view) {
+        Intent intent = new Intent(this, AssessmentDetails.class);
+        intent.putExtra("courseID", courseID);
+        startActivity(intent);
     }
 }

@@ -20,7 +20,7 @@ public class Course {
     private int termID;
     private String notes;
 
-    public Course(int id, String title, String start, String end, String status, String instructorName, String instructorPhone, String instructorEmail, int termId) {
+    public Course(int id, String title, String start, String end, String status, String instructorName, String instructorPhone, String instructorEmail, int termId, String notes) {
         primary_id = id;
         this.start = start;
         this.end = end;
@@ -30,6 +30,7 @@ public class Course {
         this.instructorPhone = instructorPhone;
         this.instructorEmail = instructorEmail;
         this.termID = termId;
+        this.notes = notes;
     }
 
     public Course(){}
@@ -97,7 +98,7 @@ public class Course {
     public void setInstructorEmail(String instructorEmail) { this.instructorEmail = instructorEmail; }
 
     public void setNotes(String note) {
-        this.notes += note;
+        this.notes = note;
     }
     public String getNotes() {
         return this.notes;

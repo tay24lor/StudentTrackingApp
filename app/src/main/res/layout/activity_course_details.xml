@@ -175,11 +175,13 @@
         android:elevation="8dp"
         android:text="Add Assessment +"
         android:textSize="22sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:onClick="addAssessment"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/assessmentRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="94dp" />
+        android:layout_height="130dp" />
 
   </LinearLayout>
 
@@ -193,7 +195,8 @@
       android:text="Save Course"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+      app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+      app:layout_constraintVertical_bias="0.274" />
 
   <ImageButton
       android:id="@+id/imageButton2"
@@ -207,5 +210,6 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+      app:layout_constraintVertical_bias="0.354"
       app:srcCompat="@drawable/ic_delete_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

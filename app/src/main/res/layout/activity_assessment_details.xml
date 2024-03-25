@@ -7,17 +7,29 @@
     android:background="#DDEEFF"
     tools:context=".UI.AssessmentDetails">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="395dp"
-        android:layout_height="542dp"
+        android:layout_width="393dp"
+        android:layout_height="367dp"
         android:background="#CDB3B3"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.118">
+        app:layout_constraintVertical_bias="0.368">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,9 +125,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="198dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center_vertical"
+                android:background="#D1D1C5"
                 android:gravity="center|start"
                 android:text="Select Assessment Type"
                 android:textSize="16sp"
@@ -128,33 +141,16 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#B39E9E"
-            android:elevation="8dp"
-            android:text="Add Assessment +"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/assessmentRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="152dp"
-            android:elevation="12dp"
-            android:scrollbars="vertical"/>
-
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_save_course"
+        android:id="@+id/button_save_assessment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Save Course"
+        android:text="Save Assessment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
