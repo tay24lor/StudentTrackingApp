@@ -3,24 +3,32 @@ package android.zybooks.studentprogressapplication;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+
 @Entity(tableName = "courses")
 public class Course {
     @PrimaryKey(autoGenerate = true)
     private int primary_id;
-    private String mStart;
-    private String mEnd;
-    private String mTitle;
-    private String mStatus;
-    private String instructorName;
-    private int termID;
+    private String start;
+    private String end;
+    private String title;
+    private String status;
 
-    public Course(int id, String title, String start, String end, String status, String instructorName, int termId) {
+    private String instructorName;
+    private String instructorPhone;
+    private String instructorEmail;
+    private int termID;
+    private String notes;
+
+    public Course(int id, String title, String start, String end, String status, String instructorName, String instructorPhone, String instructorEmail, int termId) {
         primary_id = id;
-        mStart = start;
-        mEnd = end;
-        mTitle = title;
-        mStatus = status;
+        this.start = start;
+        this.end = end;
+        this.title = title;
+        this.status = status;
         this.instructorName = instructorName;
+        this.instructorPhone = instructorPhone;
+        this.instructorEmail = instructorEmail;
         this.termID = termId;
     }
 
@@ -35,35 +43,35 @@ public class Course {
     }
 
     public String getTitle() {
-        return mTitle;
+        return this.title;
     }
 
     public void setTitle(String title) {
-        this.mTitle = title;
+        this.title = title;
     }
 
     public String getStart() {
-        return mStart;
+        return start;
     }
 
     public void setStart(String start) {
-        this.mStart = start;
+        this.start = start;
     }
 
     public String getEnd() {
-        return mEnd;
+        return end;
     }
 
     public void setEnd(String end) {
-        this.mEnd = end;
+        this.end = end;
     }
 
     public String getStatus() {
-        return mStatus;
+        return status;
     }
 
     public void setStatus(String status) {
-        mStatus = status;
+        this.status = status;
     }
 
     public int getTermID() { return termID; }
@@ -71,10 +79,27 @@ public class Course {
     public void setTermID(int id) { termID = id; }
 
     public String getInstructorName() {
-        return instructorName;
+        return this.instructorName;
     }
 
     public void setInstructorName(String instructorName) {
         this.instructorName = instructorName;
+    }
+
+    public String getInstructorPhone() {
+        return instructorPhone;
+    }
+
+    public void setInstructorPhone(String instructorPhone) { this.instructorPhone = instructorPhone; }
+
+    public String getInstructorEmail() { return instructorEmail; }
+
+    public void setInstructorEmail(String instructorEmail) { this.instructorEmail = instructorEmail; }
+
+    public void setNotes(String note) {
+        this.notes += note;
+    }
+    public String getNotes() {
+        return this.notes;
     }
 }

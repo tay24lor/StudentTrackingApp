@@ -3,6 +3,7 @@ package android.zybooks.studentprogressapplication.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,10 +12,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.zybooks.studentprogressapplication.Course;
+import android.zybooks.studentprogressapplication.CreateNoteActivity;
 import android.zybooks.studentprogressapplication.Database.Repository;
 import android.zybooks.studentprogressapplication.R;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -29,6 +32,10 @@ public class CourseDetails extends AppCompatActivity {
     String end;
     String instructorN;
     String statusString;
+    String termTitle;
+    String termStart;
+    String termEnd;
+    String note;
 
     DatePickerDialog.OnDateSetListener startDate;
     DatePickerDialog.OnDateSetListener endDate;
@@ -43,6 +50,7 @@ public class CourseDetails extends AppCompatActivity {
     EditText instructorName;
     int termID;
     Repository repository;
+    Course course;
 
 
     @Override
@@ -50,14 +58,23 @@ public class CourseDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_details);
 
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
         repository = new Repository(getApplication());
 
+        for (Course current : repository.getAllCourses()) { course = current; }
+
         courseID = getIntent().getIntExtra("id", -1);
-        start = getIntent().getStringExtra("start");
-        end = getIntent().getStringExtra("end");
+        start = getIntent().getStringExtra("courseStart");
+        end = getIntent().getStringExtra("courseEnd");
         instructorN = getIntent().getStringExtra("instructorName");
         statusString = getIntent().getStringExtra("status");
+
         termID = getIntent().getIntExtra("termID", -1);
+        termTitle = getIntent().getStringExtra("termTitle");
+        termStart = getIntent().getStringExtra("start");
+        termEnd = getIntent().getStringExtra("end");
 
         courseTitle = findViewById(R.id.course_name_field);
         courseTitle.setText(getIntent().getStringExtra(("title")));
@@ -70,6 +87,8 @@ public class CourseDetails extends AppCompatActivity {
 
         instructorName = findViewById(R.id.instructorNameField);
         instructorName.setText(instructorN);
+
+        note = getIntent().getStringExtra("notes");
 
         startDate = (datePicker, year, monthOfYear, dayOfMonth) -> {
             myCalendarStart.set(Calendar.YEAR, year);
@@ -121,7 +140,6 @@ public class CourseDetails extends AppCompatActivity {
         Button button = findViewById(R.id.button_save_course);
 
         button.setOnClickListener(view -> {
-            Course course;
             statusString = status.getSelectedItem().toString();
             instructorN = instructorName.getText().toString();
 
@@ -132,18 +150,23 @@ public class CourseDetails extends AppCompatActivity {
                     courseID = getLatestID();
 
                 course = new Course(courseID, courseTitle.getText().toString(),
-                                    start, end, statusString, instructorN, termID);
+                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID);
+                course.setNotes(note);
                 repository.insert(course);
             }
 
             else {
                 course = new Course(courseID, courseTitle.getText().toString(),
-                                    start, end, statusString, instructorN, termID);
+                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID);
+                course.setNotes(note);
                 repository.update(course);
             }
 
             Intent intent = new Intent(this, TermDetails.class);
-            intent.putExtra("termID", course.getTermID());
+            intent.putExtra("termID", termID);
+            intent.putExtra("termTitle", termTitle);
+            intent.putExtra("start", termStart);
+            intent.putExtra("end", termEnd);
             startActivity(intent);
         });
     }
@@ -160,7 +183,28 @@ public class CourseDetails extends AppCompatActivity {
         }
         Intent intent = new Intent(this, TermDetails.class);
         intent.putExtra("termID", termID);
+        intent.putExtra("termTitle", termTitle);
+        intent.putExtra("start", termStart);
+        intent.putExtra("end", termEnd);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!repository.getAllCourses().isEmpty()) {
+            if (course.getNotes().isEmpty()) {
+                menu.findItem(R.id.add_notes_action).setTitle("Add Note");
+            } else {
+                menu.findItem(R.id.add_notes_action).setTitle("View Notes");
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.course_details_menu, menu);
+        return true;
     }
 
     @Override
@@ -170,6 +214,11 @@ public class CourseDetails extends AppCompatActivity {
             super.onBackPressed();
             return true;
 
+        }
+        else if (item.getItemId() == R.id.add_notes_action) {
+            Intent intent = new Intent(this, CreateNoteActivity.class);
+            intent.putExtra("courseID", courseID);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

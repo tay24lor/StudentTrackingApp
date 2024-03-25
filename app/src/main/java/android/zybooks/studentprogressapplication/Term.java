@@ -11,6 +11,7 @@ public class Term {
     private String mStart;
     private String mEnd;
     private String mTitle;
+
     public Term(int id, String title, String start, String end) {
         primary_id = id;
         mTitle = title;
@@ -18,9 +19,7 @@ public class Term {
         mEnd = end;
     }
 
-    public Term() {
-
-    }
+    public Term() {}
 
     public int getPrimary_id() {
         return primary_id;
@@ -29,8 +28,6 @@ public class Term {
     public void setPrimary_id(int id) {
         primary_id = id;
     }
-
-
 
     public String getTitle() {
         return mTitle;

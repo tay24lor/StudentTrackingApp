@@ -3,6 +3,8 @@ package android.zybooks.studentprogressapplication.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +17,7 @@ import android.zybooks.studentprogressapplication.R;
 import android.zybooks.studentprogressapplication.Term;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,10 +29,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class TermDetails extends AppCompatActivity {
 
     int termID;
+    int tempTermID;
     String title;
     String start;
     String end;
@@ -50,6 +55,12 @@ public class TermDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term_details);
 
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         repository = new Repository(getApplication());
 
         editTitle = findViewById(R.id.term_name_field);
@@ -58,7 +69,7 @@ public class TermDetails extends AppCompatActivity {
 
         termID = getIntent().getIntExtra("termID", -1);
 
-        title = getIntent().getStringExtra("title");
+        title = getIntent().getStringExtra("termTitle");
         editTitle.setText(title);
 
         start = getIntent().getStringExtra("start");
@@ -137,7 +148,12 @@ public class TermDetails extends AppCompatActivity {
 
         List<Course> associatedCourses = new ArrayList<>();
         for (Course course : repository.getAllCourses()) {
-            if (course.getTermID() == termID) {
+            if (course.getTermID() == -1) {
+                course.setTermID(termID);
+                associatedCourses.add(course);
+                repository.update(course);
+            }
+            else if (course.getTermID() == termID) {
                 associatedCourses.add(course);
             }
         }
@@ -152,10 +168,23 @@ public class TermDetails extends AppCompatActivity {
         courseAdapter.setCourses(associatedCourses);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.course_details_menu, menu);
+        return true;
+    }
+
+
     protected void onResume() {
         super.onResume();
-
+        Term term;
         if (!repository.getAllTerms().isEmpty()) {
+            term = repository.getAllTerms().get(termID - 1);
+            editTitle.setText(term.getTitle());
+            editStartDate.setText(term.getStart());
+            editEndDate.setText(term.getEnd());
+        }
+        /*if (!repository.getAllTerms().isEmpty()) {
             Term term = null;
             for (Term termInList : repository.getAllTerms()) {
                 if (termInList.getPrimary_id() == termID) {
@@ -165,14 +194,18 @@ public class TermDetails extends AppCompatActivity {
 
 
             assert term != null;
-            editTitle.setText(term.getTitle());
-            editStartDate.setText(term.getStart());
-            editEndDate.setText(term.getEnd());
-        }
 
+
+        }
+        */
         List<Course> associatedCourses = new ArrayList<>();
         for (Course course : repository.getAllCourses()) {
-            if (course.getTermID() == termID) {
+            if (course.getTermID() == -1) {
+                course.setTermID(termID);
+                associatedCourses.add(course);
+                repository.update(course);
+            }
+            else if (course.getTermID() == termID) {
                 associatedCourses.add(course);
             }
         }
@@ -209,7 +242,7 @@ public class TermDetails extends AppCompatActivity {
                     repository.delete(term);
                 }
                 else {
-                    Toast.makeText(this, "No", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Term cannot be deleted while courses are assigned to it.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -219,7 +252,6 @@ public class TermDetails extends AppCompatActivity {
 
     public void addCourse(View view) {
         Intent intent = new Intent(this, CourseDetails.class);
-        intent.putExtra("courseID", -1);
         intent.putExtra("termID", termID);
         startActivity(intent);
     }
