@@ -135,12 +135,26 @@
           android:textSize="14sp"
           android:textStyle="bold" />
 
+      <TextView
+          android:id="@+id/textView4"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="bottom"
+          android:text="Phone" />
+
+      <TextView
+          android:id="@+id/textView3"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Name" />
+
       <EditText
           android:id="@+id/instructorNameField"
-          android:layout_width="279dp"
+          android:layout_width="194dp"
           android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:layout_marginStart="5dp" />
+          android:layout_gravity="center|top|end"
+          android:layout_marginStart="5dp"
+          android:gravity="end" />
 
     </LinearLayout>
 
@@ -169,19 +183,20 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#B39E9E"
         android:elevation="8dp"
+        android:onClick="addAssessment"
         android:text="Add Assessment +"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:onClick="addAssessment"/>
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assessmentRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="130dp" />
+        android:layout_height="130dp"
+        android:background="#F4EDAA" />
 
   </LinearLayout>
 

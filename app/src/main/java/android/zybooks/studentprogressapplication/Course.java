@@ -20,7 +20,8 @@ public class Course {
     private int termID;
     private String notes;
 
-    public Course(int id, String title, String start, String end, String status, String instructorName, String instructorPhone, String instructorEmail, int termId, String notes) {
+    public Course(int id, String title, String start, String end, String status, String instructorName,
+                  String instructorPhone, String instructorEmail, int termId, String notes) {
         primary_id = id;
         this.start = start;
         this.end = end;

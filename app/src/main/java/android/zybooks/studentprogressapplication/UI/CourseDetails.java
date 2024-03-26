@@ -17,6 +17,7 @@ import android.zybooks.studentprogressapplication.Course;
 import android.zybooks.studentprogressapplication.CreateNoteActivity;
 import android.zybooks.studentprogressapplication.Database.Repository;
 import android.zybooks.studentprogressapplication.R;
+import android.zybooks.studentprogressapplication.Term;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -74,14 +75,15 @@ public class CourseDetails extends AppCompatActivity {
 
         repository = new Repository(getApplication());
 
-        courseID = getIntent().getIntExtra("id", -1);
+        courseID = getIntent().getIntExtra("courseID", -1);
 
-        for (Course current : repository.getAllCourses()) {
+        /*for (Course current : repository.getAllCourses()) {
             if (current.getPrimary_id() == courseID)
                 course = current;
-        }
+        }*/
 
-        start = getIntent().getStringExtra("courseStart");
+
+        /*start = getIntent().getStringExtra("courseStart");
         end = getIntent().getStringExtra("courseEnd");
         instructorN = getIntent().getStringExtra("instructorName");
         statusString = getIntent().getStringExtra("status");
@@ -90,17 +92,21 @@ public class CourseDetails extends AppCompatActivity {
         termTitle = getIntent().getStringExtra("termTitle");
         termStart = getIntent().getStringExtra("start");
         termEnd = getIntent().getStringExtra("end");
-
+        */
         courseTitle = findViewById(R.id.course_name_field);
         courseTitle.setText(getIntent().getStringExtra(("title")));
         courseStart = findViewById(R.id.editTextStartDateSelected);
-        courseStart.setText(start);
+        //courseStart.setText(start);
 
         courseEnd = findViewById(R.id.editTextEndDateSelected);
-        courseEnd.setText(end);
+        //courseEnd.setText(end);
 
         instructorName = findViewById(R.id.instructorNameField);
-        instructorName.setText(instructorN);
+        if (courseID != -1)
+            populateFields(courseID);
+        else
+            termID = getIntent().getIntExtra("termID", -1);
+        //instructorName.setText(instructorN);
 
         note = getIntent().getStringExtra("notes");
 
@@ -176,9 +182,9 @@ public class CourseDetails extends AppCompatActivity {
 
             Intent intent = new Intent(this, TermDetails.class);
             intent.putExtra("termID", termID);
-            intent.putExtra("termTitle", termTitle);
+            /*intent.putExtra("termTitle", termTitle);
             intent.putExtra("start", termStart);
-            intent.putExtra("end", termEnd);
+            intent.putExtra("end", termEnd);*/
             startActivity(intent);
         });
 
@@ -203,6 +209,24 @@ public class CourseDetails extends AppCompatActivity {
         assessmentRecyclerView.addItemDecoration(itemDecoration);
         assessmentAdapter.setAssessments(associatedAssessments);
     }
+
+    private void populateFields(int courseID) {
+        if (!repository.getAllCourses().isEmpty()) {
+            for (Course course : repository.getAllCourses()) {
+                if (course.getPrimary_id() == courseID) {
+                    this.course = course;
+                }
+            }
+        }
+
+        courseTitle.setText(course.getTitle());
+        courseStart.setText(course.getStart());
+        courseEnd.setText(course.getEnd());
+        instructorName.setText(course.getInstructorName());
+        statusString = course.getStatus();
+        termID = course.getTermID();
+    }
+
     public int getLatestID() {
         return repository.getAllCourses().get(repository.getAllCourses().size()
                 - 1).getPrimary_id() + 1;
@@ -257,18 +281,8 @@ public class CourseDetails extends AppCompatActivity {
             return true;
         }
         else if (item.getItemId() == R.id.add_notes_action) {
-            String notes;
-            if (course != null) {
-                if (!course.getNotes().isEmpty())
-                    notes = course.getNotes();
-                else
-                    notes = "";
-            }
-            else
-                notes = "";
             Intent intent = new Intent(this, CreateNoteActivity.class);
             intent.putExtra("courseID", courseID);
-            intent.putExtra("notes", note);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

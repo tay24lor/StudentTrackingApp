@@ -31,9 +31,6 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         int courseID = getIntent().getIntExtra("courseID", -1);
         EditText note = findViewById(R.id.note_field);
-        String notes = getIntent().getStringExtra("notes");
-        if (notes != null)
-            note.setText(notes);
 
         Repository repository = new Repository(getApplication());
 
@@ -42,16 +39,15 @@ public class CreateNoteActivity extends AppCompatActivity {
                 current = course;
             }
         }
-        if (courseID != -1)
+        if (courseID != -1) {
             myToolbar.setTitle("Notes for " + current.getTitle());
+            note.setText(current.getNotes());
+        }
         else
             myToolbar.setTitle("Notes for unnamed course.");
         Button button = findViewById(R.id.save_note_button);
         button.setOnClickListener(v -> {
             Intent intent = new Intent(this, CourseDetails.class);
-            current.setNotes(note.getText().toString());
-            if (courseID == -1) repository.insert(current);
-            else repository.update(current);
             intent.putExtra("courseID", courseID);
             intent.putExtra("notes", note.getText().toString());
             startActivity(intent);

@@ -54,7 +54,7 @@
                 android:layout_width="225dp"
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
-                android:textAlignment="gravity" />
+                android:textAlignment="center" />
         </LinearLayout>
 
         <LinearLayout
@@ -134,6 +134,7 @@
             android:id="@+id/addCourseTextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#ECDF73"
             android:onClick="addCourse"
             android:text="Add Course +"
             android:textSize="22sp"

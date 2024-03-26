@@ -72,7 +72,8 @@ public class TermDetails extends AppCompatActivity {
 
         termID = getIntent().getIntExtra("termID", -1);
 
-        populateFields(termID);
+        if (termID != -1)
+            populateFields(termID);
 
         startDate = (datePicker, year, monthOfYear, dayOfMonth) -> {
             myCalendarStart.set(Calendar.YEAR, year);
