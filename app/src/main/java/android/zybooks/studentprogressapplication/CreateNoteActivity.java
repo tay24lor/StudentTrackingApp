@@ -49,14 +49,11 @@ public class CreateNoteActivity extends AppCompatActivity {
         Button button = findViewById(R.id.save_note_button);
         button.setOnClickListener(v -> {
             Intent intent = new Intent(this, CourseDetails.class);
-            if (courseID != -1) {
-                repository.update(current);
-            }
-            else {
-                repository.insert(current);
-            }
             current.setNotes(note.getText().toString());
+            if (courseID == -1) repository.insert(current);
+            else repository.update(current);
             intent.putExtra("courseID", courseID);
+            intent.putExtra("notes", note.getText().toString());
             startActivity(intent);
         });
     }

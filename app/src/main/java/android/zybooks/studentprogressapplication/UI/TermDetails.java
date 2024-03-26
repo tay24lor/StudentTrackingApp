@@ -15,6 +15,7 @@ import android.zybooks.studentprogressapplication.Database.Repository;
 import android.zybooks.studentprogressapplication.R;
 import android.zybooks.studentprogressapplication.Term;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -32,6 +33,7 @@ import java.util.Objects;
 
 public class TermDetails extends AppCompatActivity {
 
+    Term current;
     int termID;
     String title;
     String start;
@@ -47,6 +49,7 @@ public class TermDetails extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener endDate;
     Calendar myCalendarStart = Calendar.getInstance();
     Calendar myCalendarEnd = Calendar.getInstance();
+    String myTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +64,15 @@ public class TermDetails extends AppCompatActivity {
 
         repository = new Repository(getApplication());
 
+
+
         editTitle = findViewById(R.id.term_name_field);
         editStartDate = findViewById(R.id.editTextStartDateSelected);
         editEndDate = findViewById(R.id.editTextEndDateSelected);
 
         termID = getIntent().getIntExtra("termID", -1);
 
-        title = getIntent().getStringExtra("termTitle");
-        editTitle.setText(title);
-
-        start = getIntent().getStringExtra("start");
-        editStartDate.setText(start);
-
-        end = getIntent().getStringExtra("end");
-        editEndDate.setText(end);
+        populateFields(termID);
 
         startDate = (datePicker, year, monthOfYear, dayOfMonth) -> {
             myCalendarStart.set(Calendar.YEAR, year);
@@ -115,21 +113,20 @@ public class TermDetails extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.button_save_term);
         saveButton.setOnClickListener(view -> {
-            Term term;
             if (termID == -1) {
                 if (repository.getAllTerms().isEmpty())
                     termID = 1;
                 else
                     termID = getLatestID();
 
-                term = new Term(termID, editTitle.getText().toString(), editStartDate.getText().toString(),
+                current = new Term(termID, editTitle.getText().toString(), editStartDate.getText().toString(),
                                 editEndDate.getText().toString());
-                repository.insert(term);
+                repository.insert(current);
             }
             else {
-                term = new Term(termID, editTitle.getText().toString(), editStartDate.getText().toString(),
+                current = new Term(termID, editTitle.getText().toString(), editStartDate.getText().toString(),
                                 editEndDate.getText().toString());
-                repository.update(term);
+                repository.update(current);
             }
 
             for (Course course : repository.getAllCourses()) {
@@ -164,17 +161,30 @@ public class TermDetails extends AppCompatActivity {
         courseAdapter.setCourses(associatedCourses);
     }
 
-    protected void onResume() {
+    private void populateFields(int termID) {
+        if (!repository.getAllTerms().isEmpty()) {
+            for (Term term : repository.getAllTerms()) {
+                if (term.getPrimary_id() == termID) {
+                    current = term;
+                }
+            }
+        }
+        editTitle.setText(current.getTitle());
+        editStartDate.setText(current.getStart());
+        editEndDate.setText(current.getEnd());
+    }
+
+    /*protected void onResume() {
         super.onResume();
-        /*Term term;
+        *//*Term term;
         termID = getIntent().getIntExtra("termID", -1);
         if (!repository.getAllTerms().isEmpty()) {
             term = repository.getAllTerms().get(termID - 1);
             editTitle.setText(term.getTitle());
             editStartDate.setText(term.getStart());
             editEndDate.setText(term.getEnd());
-        }*/
-        /*if (!repository.getAllTerms().isEmpty()) {
+        }*//*
+        *//*if (!repository.getAllTerms().isEmpty()) {
             Term term = null;
             for (Term termInList : repository.getAllTerms()) {
                 if (termInList.getPrimary_id() == termID) {
@@ -187,7 +197,7 @@ public class TermDetails extends AppCompatActivity {
 
 
         }
-        */
+        *//*
         List<Course> associatedCourses = new ArrayList<>();
         for (Course course : repository.getAllCourses()) {
             if (course.getTermID() == -1) {
@@ -205,7 +215,7 @@ public class TermDetails extends AppCompatActivity {
         courseRecyclerView.setAdapter(courseAdapter);
         courseRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         courseAdapter.setCourses(associatedCourses);
-    }
+    }*/
 
     private void updateStart() {
         editStartDate.setText(sdf.format(myCalendarStart.getTime()));

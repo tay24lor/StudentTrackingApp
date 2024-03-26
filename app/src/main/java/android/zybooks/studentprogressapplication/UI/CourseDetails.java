@@ -224,7 +224,13 @@ public class CourseDetails extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (!repository.getAllCourses().isEmpty()) {
+        if (note == null || note.isEmpty()) {
+            menu.findItem(R.id.add_notes_action).setTitle("Add Notes");
+        }
+        else {
+            menu.findItem(R.id.add_notes_action).setTitle("View Notes");
+        }
+        /*if (!repository.getAllCourses().isEmpty()) {
             if (course != null) {
                 if (course.getNotes().isEmpty()) {
                     menu.findItem(R.id.add_notes_action).setTitle("Add Note");
@@ -234,7 +240,7 @@ public class CourseDetails extends AppCompatActivity {
             }
         }
         else if (courseID == -1)
-            menu.findItem(R.id.add_notes_action).setTitle("Add Note");
+            menu.findItem(R.id.add_notes_action).setTitle("Add Note");*/
         return true;
     }
     @Override
@@ -245,7 +251,9 @@ public class CourseDetails extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            super.onBackPressed();
+            Intent intent = new Intent(this, TermDetails.class);
+            intent.putExtra("termID", termID);
+            startActivity(intent);
             return true;
         }
         else if (item.getItemId() == R.id.add_notes_action) {
@@ -260,7 +268,7 @@ public class CourseDetails extends AppCompatActivity {
                 notes = "";
             Intent intent = new Intent(this, CreateNoteActivity.class);
             intent.putExtra("courseID", courseID);
-            intent.putExtra("notes", notes);
+            intent.putExtra("notes", note);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
