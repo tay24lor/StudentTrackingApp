@@ -77,36 +77,15 @@ public class CourseDetails extends AppCompatActivity {
 
         courseID = getIntent().getIntExtra("courseID", -1);
 
-        /*for (Course current : repository.getAllCourses()) {
-            if (current.getPrimary_id() == courseID)
-                course = current;
-        }*/
-
-
-        /*start = getIntent().getStringExtra("courseStart");
-        end = getIntent().getStringExtra("courseEnd");
-        instructorN = getIntent().getStringExtra("instructorName");
-        statusString = getIntent().getStringExtra("status");
-
-        termID = getIntent().getIntExtra("termID", -1);
-        termTitle = getIntent().getStringExtra("termTitle");
-        termStart = getIntent().getStringExtra("start");
-        termEnd = getIntent().getStringExtra("end");
-        */
         courseTitle = findViewById(R.id.course_name_field);
-        courseTitle.setText(getIntent().getStringExtra(("title")));
         courseStart = findViewById(R.id.editTextStartDateSelected);
-        //courseStart.setText(start);
-
         courseEnd = findViewById(R.id.editTextEndDateSelected);
-        //courseEnd.setText(end);
-
         instructorName = findViewById(R.id.instructorNameField);
+
         if (courseID != -1)
             populateFields(courseID);
         else
             termID = getIntent().getIntExtra("termID", -1);
-        //instructorName.setText(instructorN);
 
         note = getIntent().getStringExtra("notes");
 
@@ -182,9 +161,6 @@ public class CourseDetails extends AppCompatActivity {
 
             Intent intent = new Intent(this, TermDetails.class);
             intent.putExtra("termID", termID);
-            /*intent.putExtra("termTitle", termTitle);
-            intent.putExtra("start", termStart);
-            intent.putExtra("end", termEnd);*/
             startActivity(intent);
         });
 

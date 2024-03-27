@@ -16,8 +16,9 @@ public class Assessment {
 
     public Assessment() {}
 
-    public Assessment(int id, String type, String start, String end, int courseID) {
+    public Assessment(int id, String title, String type, String start, String end, int courseID) {
         assessmentID = id;
+        this.title = title;
         this.type = type;
         this.start = start;
         this.end = end;

@@ -3,14 +3,6 @@ package android.zybooks.studentprogressapplication.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -19,20 +11,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.zybooks.studentprogressapplication.Assessment;
-import android.zybooks.studentprogressapplication.CreateNoteActivity;
 import android.zybooks.studentprogressapplication.Database.Repository;
 import android.zybooks.studentprogressapplication.R;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
 public class AssessmentDetails extends AppCompatActivity {
     int assessmentID;
-    String title;
     String start;
     String end;
     String assessmentType;
@@ -42,7 +36,7 @@ public class AssessmentDetails extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener endDate;
     Calendar myCalendarStart = Calendar.getInstance();
     Calendar myCalendarEnd = Calendar.getInstance();
-    String format = "MM/dd/yy";
+    String format = "yyyy-MM-dd";
     SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 
     EditText assessmentTitle;
@@ -67,21 +61,16 @@ public class AssessmentDetails extends AppCompatActivity {
 
         assessmentID = getIntent().getIntExtra("id", -1);
 
-        for (Assessment current : repository.getAllAssessments()) {
-            if (current.getAssessmentID() == assessmentID) {
-                assessment = current;
-            }
-        }
+        assessmentTitle = findViewById(R.id.assessment_name_field);
+        assessmentStart = findViewById(R.id.editTextAssessmentStartDateSelected);
+        assessmentEnd = findViewById(R.id.editTextAssessmentEndDateSelected);
 
-        title = getIntent().getStringExtra("title");
-        start = getIntent().getStringExtra("start");
-        end = getIntent().getStringExtra("end");
-        assessmentType = getIntent().getStringExtra("type");
         courseID = getIntent().getIntExtra("courseID", -1);
 
-        assessmentTitle.setText(title);
-        assessmentStart.setText(start);
-        assessmentEnd.setText(end);
+        if (assessmentID != -1)
+            populateFields(assessmentID);
+        else
+            courseID = getIntent().getIntExtra("courseID", -1);
 
         startDate = (datePicker, year, monthOfYear, dayOfMonth) -> {
             myCalendarStart.set(Calendar.YEAR, year);
@@ -112,7 +101,6 @@ public class AssessmentDetails extends AppCompatActivity {
         ImageButton endDateButton = findViewById(R.id.assessmentEndDatePicker);
         endDateButton.setOnClickListener(view -> {
             String date = assessmentEnd.getText().toString();
-
             if (date.isEmpty()) date = LocalDate.now().toString();
             myCalendarEnd.setTime(Date.valueOf(date));
 
@@ -142,19 +130,33 @@ public class AssessmentDetails extends AppCompatActivity {
                 else
                     assessmentID = getLatestID();
 
-                assessment = new Assessment(assessmentID, assessmentTitle.getText().toString(), assessmentStart.getText().toString(),
-                                            assessmentEnd.getText().toString(), courseID);
+                assessment = new Assessment(assessmentID, assessmentTitle.getText().toString(), assessmentType, start,
+                                            end, courseID);
                 repository.insert(assessment);
             }
             else {
-                assessment = new Assessment(assessmentID, assessmentTitle.getText().toString(), assessmentStart.getText().toString(),
-                        assessmentEnd.getText().toString(), courseID);
+                assessment = new Assessment(assessmentID, assessmentTitle.getText().toString(), assessmentType, start,
+                        end, courseID);
                 repository.update(assessment);
             }
             Intent intent = new Intent(this, CourseDetails.class);
             intent.putExtra("courseID", courseID);
             startActivity(intent);
         });
+    }
+
+    private void populateFields(int assessmentID) {
+        if (!repository.getAllAssessments().isEmpty()) {
+            for (Assessment assessment : repository.getAllAssessments()) {
+                if (assessment.getAssessmentID() == assessmentID) {
+                    this.assessment = assessment;
+                }
+            }
+        }
+        assessmentTitle.setText(assessment.getTitle());
+        assessmentStart.setText(assessment.getStart());
+        assessmentEnd.setText(assessment.getEnd());
+        assessmentType = assessment.getType();
     }
 
     @Override
