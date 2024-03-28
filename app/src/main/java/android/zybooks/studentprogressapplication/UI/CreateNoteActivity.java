@@ -1,4 +1,4 @@
-package android.zybooks.studentprogressapplication;
+package android.zybooks.studentprogressapplication.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.zybooks.studentprogressapplication.Course;
 import android.zybooks.studentprogressapplication.Database.Repository;
+import android.zybooks.studentprogressapplication.R;
 import android.zybooks.studentprogressapplication.UI.CourseDetails;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import java.util.Objects;
 
 public class CreateNoteActivity extends AppCompatActivity {
     Course current;
+    String currentNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         int courseID = getIntent().getIntExtra("courseID", -1);
         EditText note = findViewById(R.id.note_field);
 
+        currentNotes = note.getText().toString();
         Repository repository = new Repository(getApplication());
 
         for (Course course : repository.getAllCourses()) {
@@ -49,15 +52,27 @@ public class CreateNoteActivity extends AppCompatActivity {
         button.setOnClickListener(v -> {
             Intent intent = new Intent(this, CourseDetails.class);
             intent.putExtra("courseID", courseID);
-            intent.putExtra("notes", note.getText().toString());
+            current.setNotes(note.getText().toString());
+            repository.update(current);
             startActivity(intent);
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.note_menu, menu);
+        return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
             return true;
+        }
+        else if (item.getItemId() == R.id.share_notes_action) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT, current.getNotes());
+            startActivity(Intent.createChooser(intent, "Share using"));
         }
         return super.onOptionsItemSelected(item);
     }

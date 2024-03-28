@@ -3,7 +3,6 @@ package android.zybooks.studentprogressapplication.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +14,6 @@ import android.zybooks.studentprogressapplication.Database.Repository;
 import android.zybooks.studentprogressapplication.R;
 import android.zybooks.studentprogressapplication.Term;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -35,10 +33,7 @@ public class TermDetails extends AppCompatActivity {
 
     Term current;
     int termID;
-    String title;
-    String start;
-    String end;
-    String format = "MM/dd/yy";
+    String format = "yyyy-MM-dd";
     SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
 
     EditText editTitle;
@@ -49,7 +44,6 @@ public class TermDetails extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener endDate;
     Calendar myCalendarStart = Calendar.getInstance();
     Calendar myCalendarEnd = Calendar.getInstance();
-    String myTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

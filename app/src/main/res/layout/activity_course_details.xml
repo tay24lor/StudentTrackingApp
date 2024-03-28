@@ -34,7 +34,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:background="#F3EAEA"
         android:orientation="horizontal">
 
@@ -50,13 +50,14 @@
       <EditText
           android:id="@+id/course_name_field"
           android:layout_width="279dp"
-          android:layout_height="75dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
           android:layout_marginStart="5dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:background="#DDD5D5"
         android:orientation="horizontal">
 
@@ -89,7 +90,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:background="#F3EAEA"
         android:orientation="horizontal">
 
@@ -122,9 +123,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:background="#DDD5D5"
         android:orientation="horizontal">
+
 
       <TextView
           android:layout_width="87dp"
@@ -135,26 +137,71 @@
           android:textSize="14sp"
           android:textStyle="bold" />
 
-      <TextView
-          android:id="@+id/textView4"
+      <LinearLayout
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="bottom"
-          android:text="Phone" />
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:orientation="vertical">
 
-      <TextView
-          android:id="@+id/textView3"
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:gravity="left"
+            android:text="Phone" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email" />
+
+      </LinearLayout>
+
+      <LinearLayout
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Name" />
+          android:layout_height="match_parent"
+          android:layout_weight=".35"
+          android:orientation="vertical">
 
-      <EditText
-          android:id="@+id/instructorNameField"
-          android:layout_width="194dp"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center|top|end"
-          android:layout_marginStart="5dp"
-          android:gravity="end" />
+        <EditText
+            android:id="@+id/instructorNameField"
+            android:layout_width="236dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="8dp"
+            android:gravity="start"
+            android:textAlignment="textStart"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/instructorPhoneField"
+            android:layout_width="236dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="8dp"
+            android:gravity="start"
+            android:textAlignment="textStart"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/instructorEmailField"
+            android:layout_width="236dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="8dp"
+            android:gravity="start"
+            android:textAlignment="textStart"
+            android:textSize="11sp" />
+      </LinearLayout>
 
     </LinearLayout>
 
@@ -185,7 +232,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#B39E9E"
+        android:background="#A69393"
         android:elevation="8dp"
         android:onClick="addAssessment"
         android:text="Add Assessment +"
@@ -195,8 +242,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assessmentRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:background="#F4EDAA" />
+        android:layout_height="132dp"
+        android:background="#CFCA97" />
 
   </LinearLayout>
 
@@ -214,7 +261,7 @@
       app:layout_constraintVertical_bias="0.274" />
 
   <ImageButton
-      android:id="@+id/imageButton2"
+      android:id="@+id/deleteAssessment"
       android:layout_width="54dp"
       android:layout_height="53dp"
       android:layout_marginStart="16dp"

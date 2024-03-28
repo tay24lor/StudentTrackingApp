@@ -7,4 +7,12 @@
         android:title="add note"
         app:showAsAction="ifRoom"
     />
+    <item
+        android:id="@+id/set_start_alarm"
+        android:title="Create Start Alarm"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/set_end_alarm"
+        android:title="Create End Alarm"
+        app:showAsAction="never"/>
 </menu>

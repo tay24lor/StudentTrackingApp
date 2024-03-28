@@ -8,15 +8,15 @@ public class Term {
 
     @PrimaryKey(autoGenerate = true)
     private int primary_id;
-    private String mStart;
-    private String mEnd;
-    private String mTitle;
+    private String title;
+    private String start;
+    private String end;
 
     public Term(int id, String title, String start, String end) {
         primary_id = id;
-        mTitle = title;
-        mStart = start;
-        mEnd = end;
+        this.title = title;
+        this.start = start;
+        this.end = end;
     }
 
     public Term() {}
@@ -30,27 +30,27 @@ public class Term {
     }
 
     public String getTitle() {
-        return mTitle;
+        return this.title;
     }
 
     public void setTitle(String title) {
-        this.mTitle = title;
+        this.title = title;
     }
 
     public String getStart() {
-        return mStart;
+        return start;
     }
 
     public void setStart(String start) {
-        this.mStart = start;
+        this.start = start;
     }
 
     public String getEnd() {
-        return mEnd;
+        return end;
     }
 
     public void setEnd(String end) {
-        this.mEnd = end;
+        this.end = end;
     }
 
 }

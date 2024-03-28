@@ -3,8 +3,8 @@ package android.zybooks.studentprogressapplication.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
@@ -59,7 +58,7 @@ public class AssessmentDetails extends AppCompatActivity {
 
         repository = new Repository(getApplication());
 
-        assessmentID = getIntent().getIntExtra("id", -1);
+        assessmentID = getIntent().getIntExtra("assessmentID", -1);
 
         assessmentTitle = findViewById(R.id.assessment_name_field);
         assessmentStart = findViewById(R.id.editTextAssessmentStartDateSelected);
@@ -123,6 +122,8 @@ public class AssessmentDetails extends AppCompatActivity {
         Button button = findViewById(R.id.button_save_assessment);
         button.setOnClickListener(view -> {
             assessmentType = type.getSelectedItem().toString();
+            start = assessmentStart.getText().toString();
+            end = assessmentEnd.getText().toString();
 
             if (assessmentID == -1) {
                 if (repository.getAllAssessments().isEmpty())
@@ -143,6 +144,7 @@ public class AssessmentDetails extends AppCompatActivity {
             intent.putExtra("courseID", courseID);
             startActivity(intent);
         });
+
     }
 
     private void populateFields(int assessmentID) {
@@ -157,12 +159,6 @@ public class AssessmentDetails extends AppCompatActivity {
         assessmentStart.setText(assessment.getStart());
         assessmentEnd.setText(assessment.getEnd());
         assessmentType = assessment.getType();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.course_details_menu, menu);
-        return true;
     }
 
     @Override
@@ -187,5 +183,15 @@ public class AssessmentDetails extends AppCompatActivity {
     public int getLatestID() {
         return repository.getAllAssessments().get(repository.getAllAssessments().size()
                 - 1).getAssessmentID() + 1;
+    }
+    public void deleteAssessment(View view) {
+        for (Assessment assessment : repository.getAllAssessments()) {
+            if (assessment.getAssessmentID() == assessmentID) {
+                repository.delete(assessment);
+            }
+        }
+        Intent intent = new Intent(this, CourseDetails.class);
+        intent.putExtra("courseID", courseID);
+        startActivity(intent);
     }
 }

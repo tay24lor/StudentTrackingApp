@@ -52,7 +52,8 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     public void onBindViewHolder(@NonNull AssessmentAdapter.AssessmentViewHolder holder, int position) {
         if (mAssessments != null) {
             Assessment current = mAssessments.get(position);
-            holder.assessmentTitleView.setText(current.getTitle());
+            holder.assessmentTitleView.setText(String.format("%s -- %s", current.getTitle(), current.getType()));
+            holder.assessmentItemView.setText(String.format("Start Date: %10s\nEnd Date: %12s", current.getStart(), current.getEnd()));
         }
         else {
             holder.assessmentTitleView.setText("No Assessments");
