@@ -2,9 +2,11 @@ package android.zybooks.studentprogressapplication.UI;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,21 +33,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class CourseDetails extends AppCompatActivity {
 
+    int id = 1;
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    private final static String default_notification_channel_id = "default";
     int courseID;
     String title;
     String start;
     String end;
     String instructorN;
+    String instructorP;
+    String instructorE;
     String statusString;
     String note;
 
@@ -55,17 +66,15 @@ public class CourseDetails extends AppCompatActivity {
     Calendar myCalendarEnd = Calendar.getInstance();
     String format = "yyyy-MM-dd";
     SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
-
     EditText courseTitle;
     EditText courseStart;
     EditText courseEnd;
     EditText instructorName;
+    EditText instructorPhone;
+    EditText instructorEmail;
     int termID;
     Repository repository;
     Course course;
-    PendingIntent pendingIntent;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +94,8 @@ public class CourseDetails extends AppCompatActivity {
         courseStart = findViewById(R.id.editTextStartDateSelected);
         courseEnd = findViewById(R.id.editTextEndDateSelected);
         instructorName = findViewById(R.id.instructorNameField);
+        instructorPhone = findViewById(R.id.instructorPhoneField);
+        instructorEmail = findViewById(R.id.instructorEmailField);
 
         if (courseID != -1)
             populateFields(courseID);
@@ -143,6 +154,8 @@ public class CourseDetails extends AppCompatActivity {
         button.setOnClickListener(view -> {
             statusString = status.getSelectedItem().toString();
             instructorN = instructorName.getText().toString();
+            instructorP = instructorPhone.getText().toString();
+            instructorE = instructorEmail.getText().toString();
             title = courseTitle.getText().toString();
             start = courseStart.getText().toString();
             end = courseEnd.getText().toString();
@@ -154,13 +167,13 @@ public class CourseDetails extends AppCompatActivity {
                     courseID = getLatestID();
 
                 course = new Course(courseID, title,
-                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID, note);
+                                    start, end, statusString, instructorN, instructorP, instructorE, termID, note);
                 repository.insert(course);
             }
 
             else {
                 course = new Course(courseID, courseTitle.getText().toString(),
-                                    start, end, statusString, instructorN, "555-555-5555", "bob@email.com", termID, note);
+                                    start, end, statusString, instructorN, instructorP, instructorE, termID, note);
                 repository.update(course);
             }
 
@@ -254,25 +267,20 @@ public class CourseDetails extends AppCompatActivity {
             startActivity(intent);
         }
         else if (item.getItemId() == R.id.set_start_alarm) {
-            Toast.makeText(this, "Alarm Set!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(CourseDetails.this, MyReceiver.class);
-            intent.putExtra("key", "You have a course starting today!");
-            intent.putExtra("desc", course.getTitle());
-            pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, myCalendarStart.getTimeInMillis(), pendingIntent);
+            Calendar cal = Calendar.getInstance();
+            Calendar myCal = Calendar.getInstance();
+            myCal.setTime(Date.valueOf(courseStart.getText().toString()));
+            cal.setTimeInMillis(System.currentTimeMillis());
+
+            Toast.makeText(this, myCal.getTime() + "\n" + cal.getTime(), Toast.LENGTH_LONG).show();
+            scheduleNotification(getNotification(myCal.getTime().toString()), myCal.getTimeInMillis());
 
         }
         else if (item.getItemId() == R.id.set_end_alarm) {
+            java.util.Date date = myCalendarEnd.getTime();
             Toast.makeText(this, "Alarm Set!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, MyReceiver.class);
-            intent.putExtra("key", "You have a course ending today!");
-            intent.putExtra("desc", course.getTitle());
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, myCalendarEnd.getTimeInMillis(), pendingIntent);
-        }
+            scheduleNotification(getNotification("ending"), myCalendarEnd.get(Calendar.DATE));
+            }
         return super.onOptionsItemSelected(item);
     }
     private void updateStart() {
@@ -287,5 +295,31 @@ public class CourseDetails extends AppCompatActivity {
         Intent intent = new Intent(this, AssessmentDetails.class);
         intent.putExtra("courseID", courseID);
         startActivity(intent);
+    }
+    private void scheduleNotification(Notification notification, long delay) {
+        /*Calendar cal = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+
+        cal.setTimeInMillis(delay);
+
+        if (cal.getTimeInMillis() < System.currentTimeMillis()) {
+            cal.setTimeInMillis(System.currentTimeMillis() + 10000);
+        }*/
+        Intent notificationIntent = new Intent(this, MyReceiver.class);
+        notificationIntent.putExtra(MyReceiver.NOTIFICATION_ID, id);
+        id++;
+        notificationIntent.putExtra(MyReceiver.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, delay, pendingIntent);
+    }
+    private Notification getNotification(String content) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_channel_id);
+        builder.setContentTitle(courseTitle.getText().toString());
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.ic_logo_foreground);
+        builder.setAutoCancel(true);
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+        return builder.build();
     }
 }
